@@ -91,7 +91,7 @@ public class Product {
         return newProduct;
     }
 
-    public void setnewProduct(boolean newProduct) {
+    public void setNewProduct(boolean newProduct) {
         this.newProduct = newProduct;
     }
 
