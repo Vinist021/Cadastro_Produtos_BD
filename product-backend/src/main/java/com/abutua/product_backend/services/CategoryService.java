@@ -27,4 +27,23 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
+    public Category save(Category category) {
+        category = categoryRepository.save(category);
+
+        return category;
+    }
+
+    public void deleteById(int id) {
+        Category category = getById(id);
+        categoryRepository.delete(category);
+    }
+
+    public void update(int id, Category categoryUpdate) {
+
+        Category category = getById(id);
+
+        category.setName(categoryUpdate.getName());
+
+        categoryRepository.save(category);
+    }
 }
