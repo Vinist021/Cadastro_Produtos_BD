@@ -2,12 +2,16 @@ package com.abutua.product_backend.models;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "TBL_PRODUCT")
@@ -16,8 +20,18 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Name can not be blank")
+    @Size(min = 3, max = 255, message = "Name length min=5 and max=255")
     private String name;
+
+    @Column(nullable = false, length = 1024)
+    @NotBlank(message = "Description can not be blank")
+    @Size(min = 3, max = 1024, message = "Name length min=5 and max=1024")
     private String description;
+
+    @Min(value = 0, message = "Price min value=0")
     private Double price;
 
     @ManyToOne
@@ -27,6 +41,15 @@ public class Product implements Serializable {
     private boolean newProduct;
 
     // Métodos Construtores
+    public Product() {
+    }
+
+    public Product(Long id, String name, Double price){
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+
     public Product(Long id, String name, String description, Double price, Category category, boolean promotion, boolean newProduct) {
         this.id = id;
         this.name = name;
@@ -35,10 +58,6 @@ public class Product implements Serializable {
         this.category = category;
         this.promotion = promotion;
         this.newProduct = newProduct;
-    }
-
-    public Product() {
-
     }
 
     public Long getId() {

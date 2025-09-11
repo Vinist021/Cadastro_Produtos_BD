@@ -2,6 +2,7 @@ package com.abutua.product_backend.models;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,16 +16,18 @@ public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(nullable = false, unique = true)
     private String name;
 
     // Métodos Construtores
+    public Category() {
+        
+    }
+
     public Category(Integer id, String name) {
         this.id = id;
         this.name = name;
-    }
-
-    public Category() {
-        
     }
 
     public Integer getId() {
