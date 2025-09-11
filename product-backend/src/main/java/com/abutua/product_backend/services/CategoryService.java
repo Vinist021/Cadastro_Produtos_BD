@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.abutua.product_backend.dto.CategoryRequest;
+import com.abutua.product_backend.dto.CategoryResponse;
 import com.abutua.product_backend.models.Category;
 import com.abutua.product_backend.repositories.CategoryRepository;
 
@@ -27,10 +29,9 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category save(Category category) {
-        category = categoryRepository.save(category);
-
-        return category;
+    public CategoryResponse save(CategoryRequest categoryRequest) {
+         Category category = categoryRepository.save(categoryRequest.toEntity());
+         return category.toDTO();
     }
 
     public void deleteById(int id) {
