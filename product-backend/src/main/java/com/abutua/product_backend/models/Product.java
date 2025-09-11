@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -21,7 +22,7 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     @NotBlank(message = "Name can not be blank")
     @Size(min = 3, max = 255, message = "Name length min=5 and max=255")
     private String name;
@@ -35,6 +36,7 @@ public class Product implements Serializable {
     private Double price;
 
     @ManyToOne
+    @Valid
     private Category category;
     
     private boolean promotion;
