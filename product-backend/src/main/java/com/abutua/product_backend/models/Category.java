@@ -24,11 +24,15 @@ public class Category implements Serializable {
 
     // Métodos Construtores
     public Category() {
-        
+
     }
 
     public Category(String name) {
         this.name = name;
+    }
+
+    public Category(Integer id) {
+        this.id = id;
     }
 
     public Category(Integer id, String name) {
@@ -39,12 +43,15 @@ public class Category implements Serializable {
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }

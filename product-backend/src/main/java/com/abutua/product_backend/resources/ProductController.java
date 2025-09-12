@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.abutua.product_backend.dto.ProductRequest;
+import com.abutua.product_backend.dto.ProductResponse;
 import com.abutua.product_backend.models.Product;
 import com.abutua.product_backend.services.ProductService;
 
@@ -29,16 +31,16 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping()
-    public ResponseEntity<Product> save(@Validated @RequestBody Product product) {
-        productService.save(product);
+    public ResponseEntity<ProductResponse> save(@Validated @RequestBody ProductRequest productRequest) {
+        ProductResponse productResponse = productService.save(productRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(product.getId())
+                .buildAndExpand(productResponse.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(product);
+        return ResponseEntity.created(location).body(productResponse);
     }
 
     @GetMapping("/{id}")
