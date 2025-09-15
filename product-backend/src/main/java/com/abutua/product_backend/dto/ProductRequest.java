@@ -3,8 +3,10 @@ package com.abutua.product_backend.dto;
 import com.abutua.product_backend.models.Category;
 import com.abutua.product_backend.models.Product;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class ProductRequest {
@@ -20,8 +22,10 @@ public class ProductRequest {
     private String description;
 
     @Min(value = 0, message = "Price min value=0")
-    private Double price;
+    private double price;
 
+    @NotNull
+    @Valid
     private IntegerDTO category;
     
     private boolean promotion;
@@ -45,10 +49,10 @@ public class ProductRequest {
     public void setDescription(String description) {
         this.description = description;
     }
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
     public IntegerDTO getCategory() {

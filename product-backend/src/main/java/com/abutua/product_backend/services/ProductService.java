@@ -65,5 +65,10 @@ public class ProductService {
         productRepository.save(product);
 
     }
+
+    public ProductResponse getDTOById(long id) {
+        Product product = getById(id);
+        return product.toDTO();
+    }
     
 }

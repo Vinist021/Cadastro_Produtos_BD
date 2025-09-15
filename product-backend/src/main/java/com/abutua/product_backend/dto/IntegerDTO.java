@@ -1,6 +1,9 @@
 package com.abutua.product_backend.dto;
 
+import jakarta.validation.constraints.Min;
+
 public class IntegerDTO {
+    @Min(value = 1, message = "Min value = 1")
     private int id;
 
     public IntegerDTO() {
