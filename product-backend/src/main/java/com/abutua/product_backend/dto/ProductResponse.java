@@ -51,5 +51,5 @@ public class ProductResponse {
     }
     public void setCategory(CategoryResponse category) {
         this.category = category;
-    } 
+    }
 }

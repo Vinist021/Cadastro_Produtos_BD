@@ -73,6 +73,7 @@ public class ProductRequest {
     public void setNewProduct(boolean newProduct) {
         this.newProduct = newProduct;
     }
+    
     public Product toEntity() {
         Product product = new Product();
         product.setId(id);

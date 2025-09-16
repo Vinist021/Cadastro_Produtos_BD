@@ -29,8 +29,11 @@ public class ProductService {
         return product;
     }
 
-    public List<Product> getAll() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAll() {
+        return productRepository.findAll()
+                                .stream()
+                                .map(p -> p.toDTO())
+                                .toList();
     }
 
     public ProductResponse save(ProductRequest productRequest) {
@@ -45,7 +48,7 @@ public class ProductService {
 
     }
 
-    public void update(long id, Product productUpdate) {
+    public void update(long id, ProductRequest productUpdate) {
      
         Product product = getById(id);
 
@@ -54,7 +57,6 @@ public class ProductService {
         }
 
         Category category = categoryService.getById(productUpdate.getCategory().getId());
-
         product.setName(productUpdate.getName());
         product.setDescription(productUpdate.getDescription());
         product.setPrice(productUpdate.getPrice());

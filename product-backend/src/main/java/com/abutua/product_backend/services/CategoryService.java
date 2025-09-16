@@ -18,32 +18,31 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
-    
-    
+
     public Category getById(int id) {
         Category category = categoryRepository.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
-        
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
+
         return category;
     }
-    
+
     public CategoryResponse getDTOById(int id) {
-       Category category = categoryRepository.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
 
         return category.toDTO();
     }
 
     public List<CategoryResponse> getAll() {
         return categoryRepository.findAll()
-                                 .stream()
-                                 .map(c -> c.toDTO())
-                                 .collect(Collectors.toList());
+                .stream()
+                .map(c -> c.toDTO())
+                .collect(Collectors.toList());
     }
 
     public CategoryResponse save(CategoryRequest categoryRequest) {
-         Category category = categoryRepository.save(categoryRequest.toEntity());
-         return category.toDTO();
+        Category category = categoryRepository.save(categoryRequest.toEntity());
+        return category.toDTO();
     }
 
     public void deleteById(int id) {
