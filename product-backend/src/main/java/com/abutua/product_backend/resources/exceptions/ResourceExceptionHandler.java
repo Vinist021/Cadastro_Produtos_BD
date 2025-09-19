@@ -8,6 +8,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.abutua.product_backend.services.exceptions.DatabaseException;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
@@ -29,6 +31,23 @@ public class ResourceExceptionHandler {
         exception.getBindingResult()
                 .getFieldErrors()
                 .forEach(e -> error.addError(e.getDefaultMessage()));
+
+        return ResponseEntity.status(status).body(error);
+        
+    }
+
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardError> databaseException(DatabaseException exception, HttpServletRequest request) {
+
+        StandardError error = new StandardError();
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        error.setError("Database exception");
+        error.setMessage(exception.getMessage());
+        error.setPath(request.getRequestURI());
+        error.setStatus(status.value());
+        error.setTimestamp(Instant.now());
 
         return ResponseEntity.status(status).body(error);
         

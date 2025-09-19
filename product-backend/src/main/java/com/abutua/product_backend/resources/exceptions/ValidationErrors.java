@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ValidationErrors extends StandardError {
     
-    private List<String> errors = new ArrayList();
+    private List<String> errors = new ArrayList<>();
     
     public void addError(String error) {
         errors.add(error);

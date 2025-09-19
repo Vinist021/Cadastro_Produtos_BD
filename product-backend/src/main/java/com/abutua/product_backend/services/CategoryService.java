@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,6 +13,7 @@ import com.abutua.product_backend.dto.CategoryRequest;
 import com.abutua.product_backend.dto.CategoryResponse;
 import com.abutua.product_backend.models.Category;
 import com.abutua.product_backend.repositories.CategoryRepository;
+import com.abutua.product_backend.services.exceptions.DatabaseException;
 
 @Service
 public class CategoryService {
@@ -46,8 +48,12 @@ public class CategoryService {
     }
 
     public void deleteById(int id) {
-        Category category = getById(id);
-        categoryRepository.delete(category);
+        try {
+            categoryRepository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Constraint violation, category can't delete");
+        }
     }
 
     public void update(int id, CategoryResponse categoryUpdate) {
