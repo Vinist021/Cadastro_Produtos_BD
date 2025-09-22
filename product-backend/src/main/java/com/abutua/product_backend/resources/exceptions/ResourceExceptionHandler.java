@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.abutua.product_backend.services.exceptions.DatabaseException;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
@@ -50,7 +51,23 @@ public class ResourceExceptionHandler {
         error.setTimestamp(Instant.now());
 
         return ResponseEntity.status(status).body(error);
-        
     }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<StandardError> EntityNotFoundException(EntityNotFoundException exception, HttpServletRequest request) {
+
+        StandardError error = new StandardError();
+
+        HttpStatus status = HttpStatus.NOT_FOUND;
+
+        error.setError("Resource not found exception");
+        error.setMessage(exception.getMessage());
+        error.setPath(request.getRequestURI());
+        error.setStatus(status.value());
+        error.setTimestamp(Instant.now());
+
+        return ResponseEntity.status(status).body(error);
+    }
+
 
 }

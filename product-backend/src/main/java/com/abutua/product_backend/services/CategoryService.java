@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,6 +15,8 @@ import com.abutua.product_backend.dto.CategoryResponse;
 import com.abutua.product_backend.models.Category;
 import com.abutua.product_backend.repositories.CategoryRepository;
 import com.abutua.product_backend.services.exceptions.DatabaseException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CategoryService {
@@ -53,6 +56,9 @@ public class CategoryService {
         }
         catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Constraint violation, category can't delete");
+        }
+        catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFoundException("Category not found");
         }
     }
 
