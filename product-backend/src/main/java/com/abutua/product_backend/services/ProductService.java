@@ -3,6 +3,7 @@ package com.abutua.product_backend.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -44,16 +45,19 @@ public class ProductService {
     }
 
     public void deleteById(long id) {
-        Product product = getById(id);
-        productRepository.delete(product);
-
+        try{
+            Product product = getById(id);
+            productRepository.delete(product);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
     }
 
     public void update(long id, ProductRequest productUpdate) {
      
         Product product = getById(id);
 
-         Category category = categoryRepository.findById(product.getCategory().getId())
+        Category category = categoryRepository.findById(productUpdate.getCategory().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
 
         product.setName(productUpdate.getName());
@@ -64,7 +68,6 @@ public class ProductService {
         product.setNewProduct(productUpdate.isNewProduct());
 
         productRepository.save(product);
-
     }
 
     public ProductResponse getDTOById(long id) {

@@ -6,9 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.abutua.product_backend.dto.CategoryRequest;
 import com.abutua.product_backend.dto.CategoryResponse;
@@ -18,6 +16,9 @@ import com.abutua.product_backend.services.exceptions.DatabaseException;
 
 import jakarta.persistence.EntityNotFoundException;
 
+
+
+
 @Service
 public class CategoryService {
 
@@ -26,7 +27,7 @@ public class CategoryService {
 
     public CategoryResponse getById(int id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
 
         return category.toDTO();
     }
@@ -45,12 +46,11 @@ public class CategoryService {
 
     public void deleteById(int id) {
         try {
-            categoryRepository.deleteById(id);
-        }
-        catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Constraint violation, category can't delete");
-        }
-        catch (EmptyResultDataAccessException e) {
+            Category category = getById(id).toEntity();
+            categoryRepository.delete(category);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Constrain violation, category can't delete");
+        } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException("Category not found");
         }
     }

@@ -1,5 +1,6 @@
 package com.abutua.product_backend.dto;
 
+import com.abutua.product_backend.models.Category;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -27,5 +28,12 @@ public class CategoryResponse {
     }
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Category toEntity() {
+        Category category = new Category();
+        category.setId(this.id);
+        category.setName(this.name);
+        return category;
     }
 }
