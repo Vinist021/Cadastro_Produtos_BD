@@ -24,14 +24,7 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public Category getById(int id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
-
-        return category;
-    }
-
-    public CategoryResponse getDTOById(int id) {
+    public CategoryResponse getById(int id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
 
@@ -64,10 +57,12 @@ public class CategoryService {
 
     public void update(int id, CategoryResponse categoryUpdate) {
 
-        Category category = getById(id);
-
-        category.setName(categoryUpdate.getName());
-
-        categoryRepository.save(category);
+        try{
+            Category category = categoryRepository.getReferenceById(id);
+            category.setName(categoryUpdate.getName());
+            categoryRepository.save(category);
+        } catch(EntityNotFoundException e) {
+            throw new EntityNotFoundException("Category not found");
+        }
     }
 }

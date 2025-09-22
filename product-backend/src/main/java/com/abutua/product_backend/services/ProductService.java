@@ -11,6 +11,7 @@ import com.abutua.product_backend.dto.ProductRequest;
 import com.abutua.product_backend.dto.ProductResponse;
 import com.abutua.product_backend.models.Category;
 import com.abutua.product_backend.models.Product;
+import com.abutua.product_backend.repositories.CategoryRepository;
 import com.abutua.product_backend.repositories.ProductRepository;
 
 @Service
@@ -20,7 +21,7 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryRepository categoryRepository;
 
     public Product getById(long id) {
         Product product = productRepository.findById(id)
@@ -52,11 +53,9 @@ public class ProductService {
      
         Product product = getById(id);
 
-        if(productUpdate.getCategory() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category can not be empty");
-        }
+         Category category = categoryRepository.findById(product.getCategory().getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
 
-        Category category = categoryService.getById(productUpdate.getCategory().getId());
         product.setName(productUpdate.getName());
         product.setDescription(productUpdate.getDescription());
         product.setPrice(productUpdate.getPrice());
