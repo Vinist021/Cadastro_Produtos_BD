@@ -13,7 +13,6 @@ import com.abutua.product_backend.dto.ProductRequest;
 import com.abutua.product_backend.dto.ProductResponse;
 import com.abutua.product_backend.models.Category;
 import com.abutua.product_backend.models.Product;
-import com.abutua.product_backend.repositories.CategoryRepository;
 import com.abutua.product_backend.repositories.ProductRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -24,12 +23,9 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
-
     public Product getById(long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
         return product;
     }
@@ -81,10 +77,4 @@ public class ProductService {
         }
 
     }
-
-    public ProductResponse getDTOById(long id) {
-        Product product = getById(id);
-        return product.toDTO();
-    }
-    
 }
