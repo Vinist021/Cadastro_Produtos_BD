@@ -42,9 +42,12 @@ public class ProductService {
     }
 
     public ProductResponse save(ProductRequest productRequest) {
-        Product product = productRepository.save(productRequest.toEntity());
-
-        return product.toDTO();
+        try{
+            Product product = productRepository.save(productRequest.toEntity());
+            return product.toDTO();
+        } catch(DataIntegrityViolationException e) {
+            throw new EntityNotFoundException("Category not found");
+        }
     }
 
     public void deleteById(long id) {
@@ -76,7 +79,6 @@ public class ProductService {
         } catch(DataIntegrityViolationException e) {
             throw new EntityNotFoundException("Category not found");
         }
-
 
     }
 
